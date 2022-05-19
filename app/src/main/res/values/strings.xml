@@ -8,5 +8,7 @@
     <string name="feed">Feed</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="films">Films</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="desc_example">The Narrator, an automobile recall specialist, is unfulfilled by his job and possessions and suffers from chronic insomnia. To cure this, he attends support groups, posing as a sufferer of diseases. His bliss is disturbed when another impostor, Marla Singer, begins attending the same groups. The two agree to split which groups they attend. After settling in Green Hills, Sonic is eager to prove he has what it takes to be a true hero. His test comes when Dr. Robotnik returns, this time with a new partner, Knuckles, in search for an emerald that has the power to destroy civilizations. Sonic teams up with his own sidekick, Tails, and together they embark on a globe-trotting journey to find the emerald before it falls into the wrong hands.</string>
+    <string name="action">Action</string>
+    <string name="backdrop">backdrop</string>
 </resources>
