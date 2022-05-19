@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">CinemaOnlineDagger</string>
+    <string name="details_date_example">1999</string>
+    <string xmlns:tools="http://schemas.android.com/tools" name="date_example" tools:ignore="TypographyDashes">1999-10-15</string>
+    <string name="film_name_example">Fight club</string>
+    <string name="watch_trailer">Watch trailer</string>
+    <string name="description_title">Description</string>
+    <string name="feed">Feed</string>
+    <string name="bookmarks">Bookmarks</string>
 </resources>

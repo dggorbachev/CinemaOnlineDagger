@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/star_fill0_wght400_grad0_opsz48.xml" value="0.2115" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12777777777777777" />
+        <entry key="app/src/main/res/layout/fragment_movies_feed.xml" value="0.36727905273437494" />
+        <entry key="app/src/main/res/layout/item_film.xml" value="0.4948905109489051" />
+        <entry key="app/src/main/res/layout/item_genre.xml" value="1.0556650797526044" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
