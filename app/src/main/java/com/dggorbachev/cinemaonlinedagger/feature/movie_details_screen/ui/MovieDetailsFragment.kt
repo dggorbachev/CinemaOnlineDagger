@@ -1,5 +1,6 @@
 package com.dggorbachev.cinemaonlinedagger.feature.movie_details_screen.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.dggorbachev.cinemaonlinedagger.base.common.Constants.IMG_URL
 import com.dggorbachev.cinemaonlinedagger.base.utils.setThrottledClickListener
 import com.dggorbachev.cinemaonlinedagger.databinding.FragmentMovieDetailsBinding
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.domain.model.Movie
+import com.dggorbachev.cinemaonlinedagger.feature.player_screen.ui.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -50,6 +52,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         movie = args.movie
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer(::render))
+        viewModel.openFilm.observe(viewLifecycleOwner, Observer(::openFilm))
     }
 
     private fun render(state: ViewState) {
@@ -62,7 +65,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             .into(binding.ivPoster)
 
         binding.btnPlay.setThrottledClickListener {
-//            viewModel.processUiEvent(UiEvent.OnWatchClick(state.videoKey))
+            viewModel.processUiEvent(UiEvent.OnWatchClick(state.videoKey))
         }
         binding.cbSave.setThrottledClickListener {
 //            viewModel.processUiEvent(UiEvent.OnBookmarkClick)
@@ -74,5 +77,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 binding.cbSave.setButtonDrawable(R.drawable.save_border)
             }
         }
+    }
+
+    private fun openFilm(event: UiEvent.OnWatchClick) {
+        val intent = Intent(context, PlayerActivity::class.java)
+        val b = Bundle()
+        b.putString("videoKey", event.videoKey) //Your id
+
+        intent.putExtras(b) //Put your id to your next Intent
+        startActivity(intent);
     }
 }
