@@ -15,28 +15,35 @@ class MoviesViewModel
     }
 
     override fun initialViewState(): ViewState {
-        return ViewState(moviesList = emptyList())
+        return ViewState(
+            moviesList = emptyList(),
+            isLoading = false
+        )
     }
 
     override suspend fun reduce(event: Event, previousState: ViewState): ViewState? {
         when (event) {
             is DataEvent.OnLoadData -> {
-                interactor.getMovies()
-                    .fold(onError = {
+                processDataEvent(DataEvent.OnStartLoadData)
+                interactor.getMovies().fold(
+                    onError = {
                         processDataEvent(
                             DataEvent.ErrorRequest(it.message ?: "")
                         )
                     },
-                        onSuccess = {
-                            processDataEvent(DataEvent.SuccessRequest(it))
-                        }
-                    )
+                    onSuccess = {
+                        processDataEvent(DataEvent.SuccessRequest(it))
+                    }
+                )
+            }
+            is DataEvent.OnStartLoadData -> {
+                return previousState.copy(isLoading = true)
             }
             is DataEvent.SuccessRequest -> {
-                return previousState.copy(moviesList = event.moviesList)
+                return previousState.copy(moviesList = event.moviesList, isLoading = false)
             }
             is DataEvent.ErrorRequest -> {
-                return previousState.copy(moviesList = emptyList())
+                return previousState.copy(moviesList = emptyList(), isLoading = false)
             }
         }
         return null
