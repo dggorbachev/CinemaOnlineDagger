@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dggorbachev.cinemaonlinedagger.MainActivity
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui.adapter.MoviesAdapter
 
 @AndroidEntryPoint
@@ -33,6 +34,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_feed) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMoviesFeedBinding.inflate(inflater, container, false)
+        (requireActivity() as MainActivity).changeBarVisibility(View.VISIBLE)
         return binding.root
     }
 

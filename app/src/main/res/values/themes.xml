@@ -35,6 +35,7 @@
 
         <item name="backgroundCard">@drawable/background_light</item>
         <item name="backgroundGenres">@color/grey_300</item>
+        <item name="backgroundButton">@color/grey_400</item>
     </style>
 
 </resources>
