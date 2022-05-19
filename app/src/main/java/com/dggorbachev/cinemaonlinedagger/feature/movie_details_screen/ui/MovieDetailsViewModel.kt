@@ -3,6 +3,7 @@ package com.dggorbachev.cinemaonlinedagger.feature.movie_details_screen.ui
 import androidx.lifecycle.SavedStateHandle
 import com.dggorbachev.cinemaonlinedagger.base.BaseViewModel
 import com.dggorbachev.cinemaonlinedagger.base.Event
+import com.dggorbachev.cinemaonlinedagger.base.utils.SingleLiveEvent
 import com.dggorbachev.cinemaonlinedagger.feature.movie_details_screen.domain.TrailersInteractor
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.domain.model.Movie
 import dagger.assisted.Assisted
@@ -16,6 +17,8 @@ class MovieDetailsViewModel
     @Assisted private val movie: Movie,
     private val interactor: TrailersInteractor
 ) : BaseViewModel<ViewState>() {
+
+    val openFilm = SingleLiveEvent<UiEvent.OnWatchClick>()
 
     @AssistedFactory
     interface Factory {
@@ -59,6 +62,9 @@ class MovieDetailsViewModel
                 return previousState.copy(
                     videoKey = "dQw4w9WgXcQ"
                 )
+            }
+            is UiEvent.OnWatchClick -> {
+                openFilm.value = event
             }
         }
         return null

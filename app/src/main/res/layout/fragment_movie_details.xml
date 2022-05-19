@@ -20,7 +20,7 @@
                 android:layout_height="550dp"
                 android:contentDescription="@string/backdrop"
                 android:scaleType="centerCrop"
-                android:src="?attr/backgroundCard" />
+                 />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvPosterInfo"
