@@ -8,6 +8,10 @@ data class ViewState(
     val isLoading: Boolean
 )
 
+sealed class UiEvent : Event {
+    data class OnMovieClick(val movie: Movie) : UiEvent()
+}
+
 sealed class DataEvent : Event {
     object OnLoadData : DataEvent()
     object OnStartLoadData : DataEvent()

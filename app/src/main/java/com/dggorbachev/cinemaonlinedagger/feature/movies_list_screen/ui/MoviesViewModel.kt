@@ -2,13 +2,20 @@ package com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui
 
 import com.dggorbachev.cinemaonlinedagger.base.BaseViewModel
 import com.dggorbachev.cinemaonlinedagger.base.Event
+import com.dggorbachev.cinemaonlinedagger.base.common.Screen
+import com.dggorbachev.cinemaonlinedagger.base.navigation.Screens
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.domain.MoviesInteractor
+import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel
-@Inject constructor(private val interactor: MoviesInteractor) : BaseViewModel<ViewState>() {
+@Inject constructor(
+    private val interactor: MoviesInteractor,
+    private val router: Router
+) :
+    BaseViewModel<ViewState>() {
 
     init {
         processDataEvent(DataEvent.OnLoadData)
@@ -44,6 +51,11 @@ class MoviesViewModel
             }
             is DataEvent.ErrorRequest -> {
                 return previousState.copy(moviesList = emptyList(), isLoading = false)
+            }
+            is UiEvent.OnMovieClick -> {
+                val screen =
+                    Screens.MovieDetailsScreen(movie = event.movie, Screen.MOVIES_FEED)
+                router.navigateTo(screen)
             }
         }
         return null

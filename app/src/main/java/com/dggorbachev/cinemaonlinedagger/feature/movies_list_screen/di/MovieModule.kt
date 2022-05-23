@@ -1,5 +1,6 @@
 package com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.di
 
+import com.dggorbachev.cinemaonlinedagger.feature.bookmarks_screen.data.BookmarksRepo
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.data.api.MovieApi
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.data.api.MoviesRemoteSource
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.data.api.MoviesRepo
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MoviesModule {
+object MovieModule {
 
     @Provides
     @Singleton
@@ -33,6 +34,9 @@ object MoviesModule {
 
     @Provides
     @Singleton
-    fun provideMoviesInteractor(moviesRepo: MoviesRepo): MoviesInteractor =
-        MoviesInteractor(moviesRepo = moviesRepo)
+    fun provideMoviesInteractor(
+        moviesRepo: MoviesRepo,
+        bookmarksRepo: BookmarksRepo
+    ): MoviesInteractor =
+        MoviesInteractor(moviesRepo = moviesRepo, bookmarksRepo = bookmarksRepo)
 }

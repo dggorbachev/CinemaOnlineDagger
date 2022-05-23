@@ -3,11 +3,9 @@ package com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dggorbachev.cinemaonlinedagger.R
-import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.domain.model.Movie
 
 class GenresAdapter(
     private var genreIds: List<Int>

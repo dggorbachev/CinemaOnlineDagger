@@ -28,9 +28,9 @@ object AppModule {
             .build()
 
     // logging api data
-    val interceptor: HttpLoggingInterceptor =
+    private val interceptor: HttpLoggingInterceptor =
         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-    val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    private val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Provides
     @Singleton
