@@ -5,19 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dggorbachev.cinemaonlinedagger.R
 import com.dggorbachev.cinemaonlinedagger.base.common.Constants.IMG_URL
+import com.dggorbachev.cinemaonlinedagger.base.common.Screen
 import com.dggorbachev.cinemaonlinedagger.base.utils.setThrottledClickListener
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.domain.model.Movie
-import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui.MoviesFragmentDirections
-import kotlinx.coroutines.currentCoroutineContext
 
 class MoviesAdapter(
-    private var moviesList: List<Movie>
+    private var moviesList: List<Movie>,
+    private val onMovieClick: (movie: Movie) -> Unit
 ) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -67,10 +68,8 @@ class MoviesAdapter(
         holder.rvGenres.adapter = genresAdapter
         holder.rvGenres.setRecycledViewPool(viewPool)
 
-        holder.backImage.setThrottledClickListener { mView ->
-            val direction = MoviesFragmentDirections
-                .actionMoviesFragmentToMovieDetailsFragment(curMovie)
-            mView.findNavController().navigate(direction)
+        holder.backImage.setThrottledClickListener {
+            onMovieClick(curMovie)
         }
     }
 

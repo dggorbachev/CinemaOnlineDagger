@@ -1,42 +1,39 @@
-package com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui
+package com.dggorbachev.cinemaonlinedagger.feature.bookmarks_screen.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
-import com.dggorbachev.cinemaonlinedagger.R
-import com.dggorbachev.cinemaonlinedagger.databinding.FragmentMoviesFeedBinding
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dggorbachev.cinemaonlinedagger.MainActivity
+import com.dggorbachev.cinemaonlinedagger.R
 import com.dggorbachev.cinemaonlinedagger.base.common.Screen
-import com.dggorbachev.cinemaonlinedagger.base.utils.setThrottledClickListener
+import com.dggorbachev.cinemaonlinedagger.databinding.FragmentBookmarksFeedBinding
+import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui.MoviesFragment
+import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui.MoviesViewModel
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.ui.adapter.MoviesAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MoviesFragment : Fragment(R.layout.fragment_movies_feed) {
+class BookmarksFragment : Fragment(R.layout.fragment_bookmarks_feed) {
 
-    private var _binding: FragmentMoviesFeedBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: MoviesViewModel by viewModels()
-    private val moviesAdapter by lazy {
+    private lateinit var binding: FragmentBookmarksFeedBinding
+    private val viewModel: BookmarksViewModel by viewModels()
+    private val filmsAdapter by lazy {
         MoviesAdapter(
             emptyList(),
-            onMovieClick = { movie ->
-                viewModel.processUiEvent(UiEvent.OnMovieClick(movie))
+            onMovieClick = { film ->
+                viewModel.processUiEvent(UiEvent.OnMovieClick(film))
             }
         )
     }
 
     companion object {
-        fun newInstance(): MoviesFragment = MoviesFragment()
+        fun newInstance(): BookmarksFragment = BookmarksFragment()
     }
 
     override fun onCreateView(
@@ -44,7 +41,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_feed) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMoviesFeedBinding.inflate(inflater, container, false)
+        binding = FragmentBookmarksFeedBinding.inflate(inflater, container, false)
         (requireActivity() as MainActivity).changeBarVisibility(View.VISIBLE)
         return binding.root
     }
@@ -53,16 +50,13 @@ class MoviesFragment : Fragment(R.layout.fragment_movies_feed) {
         super.onViewCreated(view, savedInstanceState)
 
         val filmsRecyclerView = view.findViewById<RecyclerView>(R.id.rvFilms)
-        filmsRecyclerView.adapter = moviesAdapter
+        filmsRecyclerView.adapter = filmsAdapter
         filmsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.viewState.observe(
-            viewLifecycleOwner, Observer(::render)
-        )
+        viewModel.viewState.observe(viewLifecycleOwner, Observer(::render))
     }
 
     private fun render(viewState: ViewState) {
-        moviesAdapter.updateFilms(viewState.moviesList)
-        binding.progressBar.isGone = !viewState.isLoading
+        filmsAdapter.updateFilms(viewState.moviesList)
     }
 }

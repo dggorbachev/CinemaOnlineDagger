@@ -3,9 +3,13 @@ package com.dggorbachev.cinemaonlinedagger.feature.movie_details_screen.ui
 import androidx.lifecycle.SavedStateHandle
 import com.dggorbachev.cinemaonlinedagger.base.BaseViewModel
 import com.dggorbachev.cinemaonlinedagger.base.Event
+import com.dggorbachev.cinemaonlinedagger.base.common.Screen
+import com.dggorbachev.cinemaonlinedagger.base.navigation.Screens
 import com.dggorbachev.cinemaonlinedagger.base.utils.SingleLiveEvent
+import com.dggorbachev.cinemaonlinedagger.feature.bookmarks_screen.domain.BookmarksInteractor
 import com.dggorbachev.cinemaonlinedagger.feature.movie_details_screen.domain.TrailersInteractor
 import com.dggorbachev.cinemaonlinedagger.feature.movies_list_screen.domain.model.Movie
+import com.github.terrakok.cicerone.Router
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -15,14 +19,21 @@ class MovieDetailsViewModel
 @AssistedInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     @Assisted private val movie: Movie,
-    private val interactor: TrailersInteractor
+    @Assisted private val previousScreen: Screen,
+    private val trailersInteractor: TrailersInteractor,
+    private val bookmarksInteractor: BookmarksInteractor,
+    private val router: Router
 ) : BaseViewModel<ViewState>() {
 
-    val openFilm = SingleLiveEvent<UiEvent.OnWatchClick>()
+    val openTrailer = SingleLiveEvent<UiEvent.OnWatchClick>()
 
     @AssistedFactory
     interface Factory {
-        fun build(stateHandle: SavedStateHandle, screenId: Movie): MovieDetailsViewModel
+        fun build(
+            stateHandle: SavedStateHandle,
+            movie: Movie,
+            previousScreen: Screen
+        ): MovieDetailsViewModel
     }
 
     init {
@@ -39,7 +50,7 @@ class MovieDetailsViewModel
     override suspend fun reduce(event: Event, previousState: ViewState): ViewState? {
         when (event) {
             is DataEvent.OnLoadData -> {
-                interactor.getTrailers(event.movieId).fold(
+                trailersInteractor.getTrailers(event.movieId).fold(
                     onSuccess = {
                         if (it.isEmpty())
                             processDataEvent(DataEvent.ErrorVideosRequest)
@@ -64,7 +75,25 @@ class MovieDetailsViewModel
                 )
             }
             is UiEvent.OnWatchClick -> {
-                openFilm.value = event
+                openTrailer.value = event
+            }
+            is UiEvent.OnBookmarkClick -> {
+                val favorite = !movie.isFavorite
+
+                if (favorite)
+                    bookmarksInteractor.create(movie.copy(isFavorite = favorite))
+                else
+                    bookmarksInteractor.delete(movie.copy(isFavorite = favorite))
+
+                return previousState.copy(
+                    movie = movie.copy(isFavorite = favorite)
+                )
+            }
+            is UiEvent.OnBackPressed -> {
+                if (previousScreen == Screen.MOVIES_FEED)
+                    router.navigateTo(Screens.MovieListScreen())
+                else
+                    router.navigateTo(Screens.BookmarksScreen())
             }
         }
         return null
